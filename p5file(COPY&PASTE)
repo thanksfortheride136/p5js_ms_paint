@@ -1,20 +1,30 @@
+let selectedColor = "white"; // Variable to store the selected color
+
 function setup() {
   cnv = createCanvas(700, 550);
-  
 }
 
 function draw() {
-  background(220);
+  // Draw the UI
+  drawUI();
+
+  // Ensure the drawing on the canvas remains visible
+  if (mouseIsPressed) {
+    mouseDragged();
+  }
+}
+
+function drawUI() {
   fill("#adc7e0");
   noStroke();
   rect(5, 5, 690, 505, 7, 7, 0, 0); //back rectangle
-  
+
   //drawing title text
   textSize(16);
   textFont("MS Sans Serif")
   fill("black");
   text("Untitled - Paint", 25, 37);
-  
+
   //draw top bar buttons
   //x button
   fill("red");
@@ -22,80 +32,119 @@ function draw() {
   fill("white");
   textSize(25);
   text("x", 659, 34);
-  
+
   //Max button
   fill("red");
   rect(600, 15, 40, 25, 3, 3, 3, 3);
   fill("white");
   rect(610, 20, 20, 15);
-  
+
   fill("red");
   rect(613.5, 22.5, 13, 10);
-  
+
   //Min button
   fill("red");
   rect(555, 15, 40, 25, 3, 3, 3, 3);
   fill("white");
   rect(565, 30, 20, 3);
-  
+
   //navbar rect
   noStroke();
   fill("#d6dcec");
   rect(15, 45, 670, 23); 
-  
+
   //leftToolBar
   fill("#efeff1");
   noStroke();
   rect(15, 71, 100, 430);
-  
+
   //bottom toolbar
   fill("#efeff1");
   noStroke();
   rect(15, 416, 669, 85); 
-  
+
   //artboard
-  fill("#white");
+  fill("#ffffff");
   stroke("#C4C4C4");
   strokeWeight(4);
   rect(118, 71, 565, 342); 
-  
+
   //bottom toolbar gap
   fill("#B6B6B6");
   noStroke();
   rect(14, 475, 670, 1); 
   rect(14, 477, 670, 1); 
-  
+
   //color square container
   fill("#F8F8F8")
   stroke("#B6B6B6");
   strokeWeight(2);
   rect(115, 425, 40, 40);
-  
-  //color square container
-  fill("#F8F8F8")
+
+  //big color square
+  fill(selectedColor);
   stroke("black");
   strokeWeight(1);
-  
-  //color boxes
-  //blue rectangle
+  rect(120, 430, 30, 30);
+
+  // Existing color boxes
+  // Blue rectangle
   stroke("#5F6061 ");
   fill("white"); //outer stroke
   rect(158, 425, 18, 18);
-  colorBox1 = fill("blue")
+  fill("blue");
   rect(160.5, 427.5, 13, 13);
-  
-  //Green rectangle
+
+  // Green rectangle
   fill("white"); //outer stroke
   rect(158, 447.5, 18, 18);
-  fill("green")
+  fill("green");
   rect(160.5, 450, 13, 13);
-  
+
+  // First row of smaller color boxes
+  let colors1 = ["red", "yellow", "purple"];
+  for (let i = 0; i < colors1.length; i++) {
+    fill("white");
+    rect(180 + i * 22, 425, 18, 18); // outer stroke
+    fill(colors1[i]);
+    rect(182.5 + i * 22, 427.5, 13, 13);
+  }
+
+  // Second row of smaller color boxes
+  let colors2 = ["orange", "pink", "cyan"];
+  for (let i = 0; i < colors2.length; i++) {
+    fill("white");
+    rect(180 + i * 22, 447.5, 18, 18); // outer stroke
+    fill(colors2[i]);
+    rect(182.5 + i * 22, 450, 13, 13);
+  }
 }
-function mousePressed(){
+
+function mousePressed() {
   positionX = mouseX;
   positionY = mouseY;
-  print("X: " + positionX + " " + "Y:" + positionY );
-  if(mousePressed() == 1){
-    print("Blue");
+  // Check if a color box is clicked and update selectedColor
+  if (positionX >= 160.5 && positionX <= 173.5 && positionY >= 427.5 && positionY <= 440.5) {
+    selectedColor = "blue";
+  } else if (positionX >= 160.5 && positionX <= 173.5 && positionY >= 450 && positionY <= 463) {
+    selectedColor = "green";
+  } else if (positionX >= 182.5 && positionX <= 195.5 && positionY >= 427.5 && positionY <= 440.5) {
+    selectedColor = "red";
+  } else if (positionX >= 204.5 && positionX <= 217.5 && positionY >= 427.5 && positionY <= 440.5) {
+    selectedColor = "yellow";
+  } else if (positionX >= 226.5 && positionX <= 239.5 && positionY >= 427.5 && positionY <= 440.5) {
+    selectedColor = "purple";
+  } else if (positionX >= 182.5 && positionX <= 195.5 && positionY >= 450 && positionY <= 463) {
+    selectedColor = "orange";
+  } else if (positionX >= 204.5 && positionX <= 217.5 && positionY >= 450 && positionY <= 463) {
+    selectedColor = "pink";
+  } else if (positionX >= 226.5 && positionX <= 239.5 && positionY >= 450 && positionY <= 463) {
+    selectedColor = "cyan";
   }
+}
+
+function mouseDragged() {
+  stroke(selectedColor);
+  strokeWeight(5);
+  line(pmouseX, pmouseY, mouseX, mouseY);
 }
